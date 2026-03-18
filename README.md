@@ -5,7 +5,7 @@
 Premier League Manager Simulator este o aplicație complexă de tip consolă, dezvoltată în C++, care oferă o experiență autentică de gestionare a fotbalului la cel mai înalt nivel. Proiectul utilizează pilonii programării orientate pe obiecte pentru a modela un ecosistem sportiv detaliat, incluzând ierarhii de atribute tehnice, mentale și fizice pentru jucători precum Cole Palmer sau Bukayo Saka.
 
 Simulatorul permite utilizatorilor să configureze loturi de jucători, să gestioneze staff-ul tehnic și să ruleze competiții dinamice. Algoritmii implementați calculează automat performanța (OVR) în funcție de poziția pe teren și simulează meciuri directe între cluburi de elită. Prin funcții avansate de analiză tactică și cronici detaliate, programul transformă datele brute într-o simulare strategică captivantă a campionatului englez.
-
+###
 ### Tema 0
 
 - [ ] Nume proiect (poate fi schimbat ulterior)
