@@ -50,6 +50,13 @@ int main() {
 
     operator<<(operator<<(std::cout, PremierLeague), etapa1);
 
+
+    Chelsea.calculeazaEficientaStaff();
+    Arsenal.calculeazaEficientaStaff();
+    Cole_Palmer.aplicaAntrenament(80);
+    Chelsea.genereazaRaportPerformanta();
+    derby.genereazaCronicaDetaliata();
+    PremierLeague.analizeazaCompetitivitatea(70.0f);
     Example obiect;
     obiect.g();
     return 0;

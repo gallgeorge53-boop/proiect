@@ -70,7 +70,33 @@ public:
         return (sumaAntrenori * 1.0f + sumaJucatori * 2.0f) / 3.0f;
     }
     [[nodiscard]] std::string getNume () const{ return nume; }
+    void genereazaRaportPerformanta() const {
+        if (jucatori.empty()) {
+            std::cout << "Nu exista date pentru raport.\n";
+            return;
+        }
+        float sumaFizic = 0, sumaTehnic = 0, sumaMental = 0;
+        int nrAF = 0, nrDF = 0;
+        for (const auto& j : jucatori) {
+            sumaFizic += (static_cast<float>(j.fizice.acceleration) + static_cast<float>(j.fizice.pace) + static_cast<float>(j.fizice.stamina)) / 3.0f;
+            sumaTehnic += (static_cast<float>(j.tehnice.finishing) + static_cast<float>(j.tehnice.dribbling) + static_cast<float>(j.tehnice.tackling)) / 3.0f;
+            sumaMental += (static_cast<float>(j.mentale.concentrare) + static_cast<float>(j.mentale.passing) + static_cast<float>(j.mentale.vission)) / 3.0f;
+            if (j.altele.pozitie == "AF") nrAF++;
+            if (j.altele.pozitie == "DF") nrDF++;
+        }
+        float medieF = sumaFizic / static_cast<float>(jucatori.size());
+        float medieT = sumaTehnic / static_cast<float>(jucatori.size());
+        float medieM = sumaMental / static_cast<float>(jucatori.size());
+        std::cout << "--- RAPORT TACTIC: " << nume << " ---\n";
+        std::cout << "Echilibru Linii: " << (nrAF > nrDF ? "Ofensiv" : (nrDF > nrAF ? "Defensiv" : "Echilibrat")) << "\n";
+        if (medieF > 80 && medieT < 60) std::cout << "Sugestie: Echipa bazata pe contraatac (Viteza > Tehnica).\n";
+        else if (medieT > 80 && medieM > 75) std::cout << "Sugestie: Stil Tiki-Taka (Tehnica si Viziune ridicata).\n";
+        else std::cout << "Sugestie: Stil de joc Standard.\n";
+        if (medieM < 50) std::cout << "ATENTIE: Nivel scazut de concentrare! Risc de goluri in ultimele minute.\n";
+    }
+
     friend class Campionat;
+    friend class Meci;
 };
 
 class Meci {
@@ -98,6 +124,25 @@ class Meci {
         os << meci.echipa1.getNume() << meci.goluri_echipa1 << " - " << meci.goluri_echipa2<< meci.echipa2.getNume()<<::endl;
         return os;
     }
+    void genereazaCronicaDetaliata() {
+        simuleazaMeci();
+        std::cout << "=== CRONICA MECIULUI: " << echipa1.getNume() << " vs " << echipa2.getNume() << " ===\n";
+        float diff = echipa1.getMedieOVR() - echipa2.getMedieOVR();
+        if (goluri_echipa1 > goluri_echipa2) {
+            std::cout << "Dominare totala de la " << echipa1.getNume() << ". ";
+            if (diff > 10) std::cout << "Diferenta de valoare a fost colosala pe teren.\n";
+            else std::cout << "Victorie muncita, decisa la detalii tactice.\n";
+        } else if (goluri_echipa1 < goluri_echipa2) {
+            std::cout << "Surpriza pe tabela! " << echipa2.getNume() << " a controlat ritmul.\n";
+        } else {
+            std::cout << "Meci de sah! Ambele echipe s-au anulat reciproc la mijlocul terenului.\n";
+        }
+        if (diff < 2 && diff > -2) {
+            std::cout << "Moment cheie: Bara in minutul 85 a impiedicat victoria uneia dintre echipe.\n";
+        }
+    }
+    friend class Etapa;
+    friend class Campionat;
 };
 
 class Etapa {
@@ -141,6 +186,27 @@ public:
     }
     void adaugaEtapa(const Etapa &etapa) {
         etape.push_back(etapa);
+    }
+    void analizeazaCompetitivitatea(float pragOVR) const {
+        std::cout << "Analiza echipelor cu OVR peste " << pragOVR << ":\n";
+        bool gasit = false;
+        int contor = 0;
+        float sumaOvrTotal = 0;
+        for (const auto& echipa : echipe) {
+            float ovrCurent = echipa.getMedieOVR();
+            sumaOvrTotal += ovrCurent;
+            if (ovrCurent >= pragOVR) {
+                std::cout << " - " << echipa.getNume() << " (OVR Mediu: " << ovrCurent << ")\n";
+                gasit = true;
+                contor++;
+            }
+        }
+        if (!gasit) std::cout << "Nicio echipa nu atinge acest prag de profesionalism.\n";
+        else {
+            float mediaLigii = sumaOvrTotal / static_cast<float>(echipe.size());
+            std::cout << "In total " << contor << " echipe de elita dintr-un total de " << echipe.size() << ".\n";
+            std::cout << "Media generala a competitiei: " << mediaLigii << "\n";
+        }
     }
 };
 

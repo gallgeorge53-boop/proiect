@@ -70,6 +70,7 @@ public:
         os << jucator.altele << std::endl;
         return os;
     }
+    friend class Echipa;
     [[nodiscard]] float getOVR() const { return OVR;}
 };
 

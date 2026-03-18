@@ -26,6 +26,7 @@ public:
         return os;
     }
     friend class Jucator;
+    friend class Echipa;
 };
 
 class Atribute_Mentale {
@@ -50,6 +51,7 @@ public:
         return os;
     }
     friend class Jucator;
+    friend class Echipa;
 };
 
 class Atribute_Fizice {
@@ -73,6 +75,7 @@ public:
         return os;
     }
     friend class Jucator;
+    friend class Echipa;
 };
 
 class Alte_Atribute {
@@ -92,6 +95,7 @@ public:
         return os;
     }
     friend class Jucator;
+    friend class Echipa;
 };
 
 #endif
