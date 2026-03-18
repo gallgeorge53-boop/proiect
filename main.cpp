@@ -1,310 +1,7 @@
-#include <iostream>
-#include <utility>
-#include <vector>
-#include <string>
+#include "Entitati.h"
 #include "include/Example.h"
-using namespace std;
-
-class Atribute_Tehnice {
-private:
-    int finishing;
-    int dribbling;
-    int faze_fixe;
-    int tackling;
-public:
-    explicit Atribute_Tehnice(int finishing = 50, int dribbling = 50, int faze_fixe = 50, int tackling = 50)
-        : finishing(finishing), dribbling(dribbling), faze_fixe(faze_fixe), tackling(tackling) {
-    }
-    friend std::ostream& operator<<(std::ostream& os, const Atribute_Tehnice &t) {
-        os << "finishing: " << t.finishing << "\n";
-        os << "dribbling: " << t.dribbling << "\n";
-        os << "faze_fixe: " << t.faze_fixe << "\n";
-        os << "tackling: " << t.tackling << "\n";
-        return os;
-    }
-    friend class Jucator;
-};
-
-class Atribute_Mentale {
-private:
-    int concentrare;
-    int flair;
-    int passing;
-    int vission;
-    int work_rate;
-    int marking_and_positioning;
-public:
-    explicit Atribute_Mentale(int concentrare = 50, int flair = 50, int passing = 50, int vission = 50, int work_rate = 50, int marking_and_positioning = 50)
-        : concentrare(concentrare), flair(flair), passing(passing), vission(vission), work_rate(work_rate), marking_and_positioning(marking_and_positioning) {
-    }
-    friend std::ostream& operator<<(std::ostream &os, const Atribute_Mentale &t) {
-        os << "concentrare:" << t.concentrare << "\n";
-        os << "flair:" << t.flair << "\n";
-        os << "passing:" << t.passing << "\n";
-        os << "vission:" << t.vission << "\n";
-        os << "work_rate:" << t.work_rate << "\n";
-        os << "marking_and_positioning:" << t.marking_and_positioning << "\n";
-        return os;
-    }
-    friend class Jucator;
-};
-
-class Atribute_Fizice {
-    int acceleration;
-    int pace;
-    int natural_fitness;
-    int stamina;
-    float inaltime;
-    float greutate;
-public:
-    explicit Atribute_Fizice(int acceleration = 50, int pace = 50, int natural_fitness = 50, int stamina = 50, float inaltime = 50, float greutate = 50)
-        : acceleration(acceleration), pace(pace), natural_fitness(natural_fitness), stamina(stamina), inaltime(inaltime), greutate(greutate) {
-    }
-    friend std::ostream& operator<<(std::ostream &os, const Atribute_Fizice &t) {
-        os << "acceleration:" << t.acceleration << "\n";
-        os << "pace:" << t.pace << "\n";
-        os << "natural_fitness:" << t.natural_fitness << "\n";
-        os << "stamina:" << t.stamina << "\n";
-        os << "inaltime:" << t.inaltime << "\n";
-        os << "greutate:" << t.greutate << "\n";
-        return os;
-    }
-    friend class Jucator;
-};
-
-class Alte_Atribute {
-    std::string pozitie;
-    std::string rol;
-    int Max_Potential;
-    int Min_Potential;
-    int peak_age;
-public:
-    explicit Alte_Atribute(std::string pozitie = "nedeterminat", std::string rol = "nedeterminat", int Max_Potential = 99, int Min_Potential = 60, int peak_age = 28)
-        : pozitie(std::move(pozitie)), rol(std::move(rol)), Max_Potential(Max_Potential), Min_Potential(Min_Potential), peak_age(peak_age) {
-    }
-    friend std::ostream& operator<<(std::ostream &os, const Alte_Atribute &t) {
-        os << "Max_Potential:" << t.Max_Potential << "\n";
-        os << "Min_Potential:" << t.Min_Potential << "\n";
-        os << "peak_age:" << t.peak_age << "\n";
-        return os;
-    }
-    friend class Jucator;
-};
-
-class Jucator {
-private:
-    std::string nume;
-    int zi_nastere, luna_nastere, an_nastere;
-    float OVR;
-    Atribute_Mentale mentale;
-    Atribute_Fizice fizice;
-    Atribute_Tehnice tehnice;
-    Alte_Atribute altele;
-
-    void calculareOVR() {
-        if (altele.pozitie == "DF")
-            OVR = (static_cast<float>(tehnice.tackling) + static_cast<float>(mentale.marking_and_positioning)) / 2.0f + 0.2f * ((fizice.inaltime + static_cast<float>(fizice.acceleration) + fizice.greutate) / 3.0f);
-        else if (altele.pozitie == "MF")
-            OVR = (0.3f * static_cast<float>(tehnice.dribbling) + 0.1f * static_cast<float>(tehnice.finishing) + 0.1f * static_cast<float>(tehnice.faze_fixe) + 0.05f * static_cast<float>(tehnice.tackling) + 0.3f * static_cast<float>(mentale.concentrare) + 0.3f * static_cast<float>(mentale.flair) + 0.4f * static_cast<float>(mentale.vission) + 0.2f * static_cast<float>(mentale.work_rate) + 0.1f * static_cast<float>(mentale.marking_and_positioning)) / 1.85f;
-        else if (altele.pozitie == "AF")
-            OVR = (0.3f * static_cast<float>(tehnice.finishing) + 0.3f * static_cast<float>(tehnice.dribbling) + 0.2f * static_cast<float>(tehnice.faze_fixe) + 0.3f * static_cast<float>(mentale.concentrare) + 0.3f * static_cast<float>(mentale.flair) + 0.2f * static_cast<float>(mentale.vission) + 0.2f * static_cast<float>(fizice.acceleration) + (0.2f * static_cast<float>(fizice.pace))) / 2.0f;
-    }
-public:
-     explicit Jucator(std::string nume_ = "nume neintrodus", int zi_ = 1, int luna_ = 1, int an_ = 1970, float OVR_val = 0, Atribute_Mentale mentale_v = Atribute_Mentale(), Atribute_Tehnice tehnice_v = Atribute_Tehnice(), Atribute_Fizice fizice_v = Atribute_Fizice(), Alte_Atribute altele_v = Alte_Atribute())
-        : nume(std::move(nume_)), zi_nastere(zi_), luna_nastere(luna_), an_nastere(an_), OVR(OVR_val), mentale(mentale_v), fizice(fizice_v), tehnice(tehnice_v), altele(std::move(altele_v)) {
-        calculareOVR();
-    }
-
-    Jucator(const Jucator &alt_jucator) : nume(alt_jucator.nume), zi_nastere(alt_jucator.zi_nastere), luna_nastere(alt_jucator.luna_nastere), an_nastere(alt_jucator.an_nastere), OVR(alt_jucator.OVR), mentale(alt_jucator.mentale), fizice(alt_jucator.fizice), tehnice(alt_jucator.tehnice), altele(alt_jucator.altele) {
-        calculareOVR();
-    }
-    Jucator& operator=(Jucator&& alt_jucator) noexcept {
-        if (this != &alt_jucator) {
-            nume = std::move(alt_jucator.nume);
-            zi_nastere = alt_jucator.zi_nastere;
-            luna_nastere = alt_jucator.luna_nastere;
-            an_nastere = alt_jucator.an_nastere;
-            OVR = alt_jucator.OVR;
-            mentale = alt_jucator.mentale;
-            fizice = alt_jucator.fizice;
-            tehnice = alt_jucator.tehnice;
-            altele = std::move(alt_jucator.altele);
-        }
-        std::cout << "operator=" << std::endl;
-        return *this;
-    }
-
-    ~Jucator() {
-        std::cout << "" << std::endl;
-    }
-    void aplicaAntrenament(int intensitate) {
-        tehnice.finishing += intensitate;
-        fizice.stamina += intensitate;
-        calculareOVR();
-        std::cout << "Jucatorul " << nume << " s-a antrenat. Noul OVR: " << OVR << std::endl;
-    }
-
-
-
-    friend std::ostream& operator<<(std::ostream &os, const Jucator &jucator) {
-        os << "nume: " << jucator.nume << std::endl;
-        os << "data_nasterii: " << jucator.zi_nastere << "/" << jucator.luna_nastere << "/" << jucator.an_nastere << std::endl;
-        os << "OVR: " << jucator.OVR << std::endl;
-        os <<"atribute fizice: " <<endl;
-        os << jucator.fizice << std::endl;
-        os << "atribute tehnice: " <<std::endl;
-        os << jucator.tehnice << std::endl;
-        os << "atribute mentale: " <<std::endl;
-        os << jucator.mentale << std::endl;
-        os << "alte atribute: " <<std::endl;
-        os << jucator.altele << std::endl;
-        return os;
-    }
-    [[nodiscard]] float getOVR() const { return OVR;}
-};
-
-class Antrenor {
-    std::string nume;
-    int zi_nastere, luna_nastere, an_nastere;
-    std::string rol;
-    float OVR;
-public:
-    explicit Antrenor(std::string nume = "Nume neintrodus", int zi = 1, int luna = 1, int an = 1970, std::string rol = "Rol neintrodus", float OVR = 0.0f)
-        : nume(std::move(nume)), zi_nastere(zi), luna_nastere(luna), an_nastere(an), rol(std::move(rol)), OVR(OVR) {
-    }
-    friend std::ostream& operator<<(std::ostream &os, const Antrenor &antenor) {
-        os << "nume: " << antenor.nume << std::endl;
-        os << "data nasterii : " << antenor.zi_nastere << "/" << antenor.luna_nastere << "/" << antenor.an_nastere << std::endl;
-        os << "rol: " << antenor.rol << std::endl;
-        os << "OVR: " << antenor.OVR << std::endl;
-        return os;
-    }
-    [[nodiscard]] float getOVR() const { return OVR; }
-    friend class Echipa;
-};
-
-class Echipa {
-private:
-    std::string nume;
-    std::vector<Jucator> jucatori;
-    std::vector<Antrenor> antrenori;
-public:
-    explicit Echipa(std::string numele = "nume neintrodus", std::vector<Jucator> jucatori = {}, std::vector<Antrenor> antrenori = {}): nume(std::move(numele)), jucatori(std::move(jucatori)), antrenori(std::move(antrenori)) {
-    }
-    void calculeazaEficientaStaff() const {
-        float suma = 0;
-        for (const auto& antrenor : antrenori) {
-            suma += antrenor.getOVR();
-        }
-        if (antrenori.empty()) cout << "Eficienta staff: 0" << endl;
-        else cout<<"Eficienta staff: "<<static_cast<float>(suma)/static_cast<float>(antrenori.size())<<std::endl;
-    }
-
-    void adaugareJucatori(const Jucator &jucator) {
-        jucatori.push_back(jucator);
-    }
-    void adaugareAntenori(const Antrenor &antenor) {
-        antrenori.push_back(antenor);
-    }
-    friend std::ostream& operator<<(std::ostream &os, const Echipa &echipa) {
-        os <<  echipa.nume << std::endl;
-        os << "Lot Jucatori (" << echipa.jucatori.size() << "):\n";
-        for (const auto& j : echipa.jucatori) {
-            os << "  " << j << "\n";
-        }
-        os << "Staff Tehnic (" << echipa.antrenori.size() << "):\n";
-        for (const auto& a : echipa.antrenori) {
-            os << "  " << a << "\n";
-        }
-        return os;
-    }
-    [[nodiscard]] float getMedieOVR() const {
-        float sumaAntrenori = 0;
-        float sumaJucatori = 0;
-        for (const auto& antenor : antrenori) {
-            sumaAntrenori += antenor.getOVR();
-        }
-        for (const auto& j : jucatori) {
-            sumaJucatori += j.getOVR();
-        }
-        return (sumaAntrenori * 1.0f + sumaJucatori * 2.0f) / 3.0f;
-    }
-    [[nodiscard]] const std::string& getNume () const { return nume; }
-    friend class Campionat;
-};
-
-class Meci {
-    Echipa echipa1;
-    Echipa echipa2;
-    int goluri_echipa1, goluri_echipa2;
-    public:
-    explicit Meci(Echipa echipa1_ = Echipa(),  Echipa echipa2_ = Echipa(), int goluri_echipa1_ = 0, int goluri_echipa2_ = 0): echipa1(std::move (echipa1_)), echipa2(std::move(echipa2_)), goluri_echipa1(goluri_echipa1_), goluri_echipa2(goluri_echipa2_) {
-    }
-
-    void simuleazaMeci() {
-        float rating1 = echipa1.getMedieOVR();
-        float rating2 = echipa2.getMedieOVR();
-
-        if (rating1 > rating2 + 5.0f) {
-            goluri_echipa1 = 2; goluri_echipa2 = 0;
-        } else if (rating2 > rating1 + 5.0f) {
-            goluri_echipa1 = 0; goluri_echipa2 = 2;
-        } else {
-            goluri_echipa1 = 1; goluri_echipa2 = 1;
-        }
-    }
-
-    friend std::ostream& operator<<(std::ostream &os, const Meci &meci) {
-        os << meci.echipa1.getNume() <<" "<< meci.goluri_echipa1 << " - " << meci.goluri_echipa2<< " "<<meci.echipa2.getNume()<<::endl;
-        return os;
-    }
-};
-class Etapa {
-    std::vector<Meci> meciuri;
-    public:
-    explicit Etapa(std::vector <Meci> meciuri_ = {}) :meciuri(std::move(meciuri_)) {
-    }
-    friend std::ostream& operator<<(std::ostream &os, const Etapa &etapa) {
-        for (unsigned long long i=0; i<etapa.meciuri.size(); i++) {
-            os << "Etapa "<<i+1<<endl;
-            os<<  etapa.meciuri[i] << endl;
-        }
-        return os;
-    }
-    void adaugaMeci(const Meci &meci_){
-        meciuri.push_back(meci_);
-    }
-};
-
-class Campionat {
-    std::string nume;
-    std::vector<Echipa> echipe;
-    std::vector<Etapa> etape;
-
-public:
-    explicit Campionat(std::string numele = "nume", std::vector<Echipa> echipele = {}, std::vector<Etapa> etape = {}) : nume(std::move(numele)), echipe(std::move(echipele)), etape(std::move(etape)) {
-    }
-    friend std::ostream& operator<<(std::ostream &os, const Campionat &campionat) {
-        os << "nume: " << campionat.nume << std::endl;
-        os << "clasare: "<<endl;
-        for (unsigned long long i = 0; i < campionat.echipe.size(); i++) {
-            os<< i + 1 <<"."<<campionat.echipe[i] << " ";
-        }
-        for (const auto& etapa_ : campionat.etape) {
-            os<< etapa_ << " ";
-        }
-        return os;
-    }
-    void adaugaEchipe(const Echipa &echipa) {
-        echipe.push_back(echipa);
-    }
-    void adaugaEtapa(const Etapa &etapa) {
-        etape.push_back(etapa);
-    }
-};
 
 int main() {
-
     Atribute_Tehnice Palmer2{ 80, 85, 90, 50 };
     Atribute_Mentale Palmer1{ 60, 90, 95, 95, 60 };
     Atribute_Fizice Palmer3{ 80, 85, 70, 50, 1.80f, 65.2f };
@@ -317,11 +14,9 @@ int main() {
     Alte_Atribute   James4{ "DF", "Wingback", 99, 70, 26 };
     Jucator Reece_James {"Reece James", 8, 12, 1999, 0.0f, James1, James2, James3, James4 };
 
-    Antrenor Liam_Rosenior{ "Liam Rosenior", 9, 7, 1984, "Head Coach", 73 };
     Echipa Chelsea("Chelsea FC");
     Chelsea.adaugareJucatori(Cole_Palmer);
     Chelsea.adaugareJucatori(Reece_James);
-    Chelsea.adaugareAntenori(Liam_Rosenior);
 
     Atribute_Tehnice SakaT{ 85, 88, 80, 45 };
     Atribute_Mentale SakaM{ 82, 85, 80, 84, 80 };
@@ -336,31 +31,26 @@ int main() {
     Jucator Martin_Odegaard{ "Martin Odegaard", 17, 12, 1998, 0.0f, OdeM, OdeT, OdeF, OdeA };
 
     Antrenor Mikel_Arteta{ "Mikel Arteta", 26, 3, 1982, "Head Coach", 86 };
+
     Echipa Arsenal("Arsenal FC");
     Arsenal.adaugareJucatori(Bukayo_Saka);
     Arsenal.adaugareJucatori(Martin_Odegaard);
     Arsenal.adaugareAntenori(Mikel_Arteta);
 
-    // --- SIMULARE MECI ---
-    Meci derby_londra(Chelsea, Arsenal);
-    derby_londra.simuleazaMeci();
+    Meci derby(Chelsea, Arsenal);
+    derby.simuleazaMeci();
 
     Etapa etapa1;
-    etapa1.adaugaMeci(derby_londra);
+    etapa1.adaugaMeci(derby);
 
     Campionat PremierLeague("Premier League");
     PremierLeague.adaugaEchipe(Chelsea);
     PremierLeague.adaugaEchipe(Arsenal);
     PremierLeague.adaugaEtapa(etapa1);
 
-    operator<<(std::cout, PremierLeague);
-
-    Chelsea.calculeazaEficientaStaff();
-    Arsenal.calculeazaEficientaStaff();
-    Cole_Palmer.aplicaAntrenament(80);
+    operator<<(operator<<(std::cout, PremierLeague), etapa1);
 
     Example obiect;
     obiect.g();
-
     return 0;
 }
