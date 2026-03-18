@@ -2,7 +2,7 @@
 #include <utility>
 #include <vector>
 #include <string>
-
+#include "include/Example.h"
 using namespace std;
 
 class Atribute_Tehnice {
@@ -243,5 +243,7 @@ int main() {
     Cole_Palmer.aplicaAntrenament(80);
     Chelsea.calculeazaEficientaStaff();
 
+    Example obiect;
+    obiect.g();
     return 0;
 }
