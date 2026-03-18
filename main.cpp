@@ -357,6 +357,7 @@ int main() {
 
     Chelsea.calculeazaEficientaStaff();
     Arsenal.calculeazaEficientaStaff();
+    Cole_Palmer.aplicaAntrenament(80);
 
     Example obiect;
     obiect.g();
