@@ -229,7 +229,7 @@ public:
         }
         return (sumaAntrenori * 1.0f + sumaJucatori * 2.0f) / 3.0f;
     }
-    [[nodiscard]] std::string getNume () const{ return nume; }
+    [[nodiscard]] const std::string& getNume () const { return nume; }
     friend class Campionat;
 };
 
